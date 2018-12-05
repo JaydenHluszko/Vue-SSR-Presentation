@@ -28,6 +28,7 @@ In the command terminal in visual studio code, you need to install the vue-cli a
 npm install -g vue-cli
 vue init webpack-simple vue-ssr
 cd vue-ssr
+npm install i webpack@3.11.0
 npm install
 ```
 We also need to add the Vue library for SSR and SPA, we also need to have a NodeJS server running and a webpack merge to merge the webpack configuration
@@ -128,11 +129,26 @@ It should look something like this
 ```
   
 ## Router File Configuration
-Our application code starts on the server so we need to 
+Our application code starts on the server so we need to provide a new instance of the router for each server request. Your router file should look like this:
+```
+// router.js
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from '../components/Home.vue';
+import About from '../components/About.vue';
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+Vue.use(Router);
+
+export function createRouter () {
+  return new Router({
+    mode: 'history',
+    routes: [
+      { path: '/', component: Home },
+      { path: '/about', component: About }
+    ]
+  });
+}
+```
 
 ## Contributing
 
