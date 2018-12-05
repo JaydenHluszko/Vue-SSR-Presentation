@@ -175,6 +175,8 @@ export function createApp() {
 ```
 
 ## Client Entry Point
+We import the dependencies we need
+We create the app from the ```main.js``` file and mount it to a node with the id of ```app```
 
 ```
 //client-entry.js
@@ -187,6 +189,7 @@ app.$mount('#app')
 ```
 
 ## Server Entry Point
+This is the webpack server entry build, and it contains what we need to target when we configure the server
 ```
 //server-entry.js
 import { createApp } from './main.js';
@@ -217,7 +220,7 @@ export default context => {
 ```
 
 ## Configuring and starting the server
-
+Finally we configure and start up the express server
 ```
 //server.js
 const express = require('express');
