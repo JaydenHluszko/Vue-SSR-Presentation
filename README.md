@@ -13,12 +13,11 @@ Setting up Vue SSR involves a lot of steps
 1.	Install the needed dependencies
 2.	Webpack configuration
 3.	NPM build scripts
-4.	Folder structure
-5.	App configuration
-6.	Setting up Vue Router
-7.	Client entry point
-8.	Server entry point
-9.	Server configuration
+4.	App configuration
+5.	Setting up Vue Router
+6.	Client entry point
+7.	Server entry point
+8.	Server configuration
 
 ### Installing the needed dependencies
 
