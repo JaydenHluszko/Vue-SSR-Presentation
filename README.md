@@ -150,23 +150,121 @@ export function createRouter () {
 }
 ```
 
-## Contributing
+## Main Vue file configuration
+We also need to provide a new app instance that is responsible for starting the router and root app. It should look like this:
+```
+// main.js
+import Vue from 'vue'
+import App from './App.vue'
+import { createRouter } from './router/router.js'
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+// export a factory function for creating fresh app, router and store
+// instances
+export function createApp() {
+  // create router instance
+  const router = createRouter();
 
-## Versioning
+  const app = new Vue({
+    router,
+    // the root instance simply renders the App component.
+    render: h => h(App)
+  });
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+  return { app, router };
+}
+```
 
-## Authors
+## Client Entry Point
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+```
+//client-entry.js
+import { createApp } from './main.js';
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+const { app } = createApp()
 
-## License
+// this assumes App.vue template root element has `id="app"`
+app.$mount('#app')
+```
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+## Server Entry Point
+```
+//server-entry.js
+import { createApp } from './main.js';
+
+export default context => {
+  // since there could potentially be asynchronous route hooks or components,
+  // we will be returning a Promise so that the server can wait until
+  // everything is ready before rendering.
+  return new Promise((resolve, reject) => {
+    const { app, router } = createApp();
+
+    // set server-side router's location
+    router.push(context.url);
+      
+    // wait until router has resolved possible async components and hooks
+    router.onReady(() => {
+      const matchedComponents = router.getMatchedComponents();
+      // no matched routes, reject with 404
+      if (!matchedComponents.length) {
+        return reject({ code: 404 });
+      }
+  
+      // the Promise should resolve to the app instance so it can be rendered
+      resolve(app);
+    }, reject);
+  });
+}
+```
+
+## Configuring and starting the server
+
+```
+//server.js
+const express = require('express');
+const server = express();
+const fs = require('fs');
+const path = require('path');
+//obtain bundle
+const bundle =  require('./dist/server.bundle.js');
+//get renderer from vue server renderer
+const renderer = require('vue-server-renderer').createRenderer({
+  //set template
+  template: fs.readFileSync('./index.html', 'utf-8')
+});
+
+server.use('/dist', express.static(path.join(__dirname, './dist')));
+
+//start server
+server.get('*', (req, res) => { 
+    
+  bundle.default({ url: req.url }).then((app) => {    
+    //context to use as data source
+    //in the template for interpolation
+    const context = {
+      title: 'Vue JS - Server Render',
+      meta: `
+        <meta description="vuejs server side render">
+      `
+    };
+
+    renderer.renderToString(app, context, function (err, html) {   
+      if (err) {
+        if (err.code === 404) {
+          res.status(404).end('Page not found')
+        } else {
+          res.status(500).end('Internal Server Error')
+        }
+      } else {
+        res.end(html)
+      }
+    });        
+  }, (err) => {
+    console.log(err);
+  });  
+});  
+
+server.listen(8080);
+```
 
 ## Acknowledgments
 
