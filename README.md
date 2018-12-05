@@ -27,7 +27,7 @@ In the command terminal in visual studio code, you need to install the vue-cli a
 ```
 npm install -g vue-cli
 vue init webpack-simple vue-ssr
-cd vue-cli
+cd vue-ssr
 npm install
 ```
 We also need to add the Vue library for SSR and SPA, we also need to have a NodeJS server running and a webpack merge to merge the webpack configuration
@@ -128,7 +128,7 @@ It should look something like this
 ```
   
 ## Router File Configuration
-
+Our application code starts on the server so we need to 
 
 * [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
