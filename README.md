@@ -268,6 +268,4 @@ server.listen(8080);
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Based off the tutorial found here https://vuejsdevelopers.com/2017/12/11/vue-ssr-router/
