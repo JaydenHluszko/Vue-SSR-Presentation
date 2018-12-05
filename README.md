@@ -1,6 +1,6 @@
 # Vue Server Side Rendering
 
-Vue Server Side Rendering or SSR for short renders all the code in the server rather than on the client, increasing the load times for your website. It saves all the code on the server. When the user clicks on your website instead of having to download all of the HTML, CSS and JavaScript the HTML and CSS will already be saved on the server, so the user does not have a blank screen while waiting for the it all to load. After the page loads it then adds the JavaScript required to add proper functionality to your website. This increases the speed your website will load and the responsiveness of the site. This is especially useful for large web applications using a large amount of JavaScript and other programming languages
+Vue Server Side Rendering or SSR for short renders all the code in the server rather than on the client, decreasing the load times for your website. It saves all the code on the server. When the user clicks on your website instead of having to download all of the HTML, CSS and JavaScript the HTML and CSS will already be saved on the server, so the user does not have a blank screen while waiting for the it all to load. After the page loads it then adds the JavaScript required to add proper functionality to your website. This increases the speed your website will load and the responsiveness of the site. This is especially useful for large web applications using a large amount of JavaScript and other programming languages
 
 
 ## Getting Started
